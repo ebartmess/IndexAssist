@@ -18,15 +18,12 @@ define(function (require, exports, module) {
     console.log("lockFile function called");
     const editor = EditorManager.getActiveEditor();
     if (editor) {
-      console.log("Editor found, locking file");
       isFileLocked = true;
       editor.on("beforeChange", function (event, editor, change) {
         if (isFileLocked) {
-          console.log("File is locked, preventing change");
           change.cancel();
         }
       });
-      console.log("File is now read-only.");
     } else {
       console.log("No active editor found");
     }
@@ -34,13 +31,10 @@ define(function (require, exports, module) {
 
   // Function to unlock the file
   function unlockFile() {
-    console.log("unlockFile function called");
     const editor = EditorManager.getActiveEditor();
     if (editor && isFileLocked) {
-      console.log("Editor found, unlocking file");
       isFileLocked = false;
       editor.off("beforeChange");
-      console.log("File is now editable.");
     } else {
       console.log("No active editor found or file is not locked");
     }
@@ -77,7 +71,7 @@ define(function (require, exports, module) {
 
   // Function to copy the current line and column number to the clipboard
   function copyCursorPosition() {
-    lockFile();
+    unlockFile();
     const editor = EditorManager.getActiveEditor();
     if (editor) {
       const cursorPos = editor.getCursorPos();
@@ -100,6 +94,7 @@ define(function (require, exports, module) {
         }
       );
     }
+    lockFile();
   }
 
   // Register the commands and add key bindings
@@ -118,7 +113,7 @@ define(function (require, exports, module) {
   // Add key bindings
   KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-L");
   KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Ctrl-Alt-U");
-  KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Shift-X");
+  KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Alt-P");
 
   // Add the commands to the menu
   const menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
