@@ -1,20 +1,24 @@
 {
-    "title": "Name of the extension",
-    "name": "github-<owner>-<repo>",
-    "description": "A sample extension.",
-    "version": "0.0.1",
-    "license": "MIT",
-    "author": "your name (https://github.com/<your github id>)",
-    "homepage": "<project web page url or this github repo url if no website available>",
-    "engines": {
-        "brackets": ">=2.0.0"
-    },
-    "categories": "demo",
-    "keywords": [
-        "phcode", "extension", "demo"
-    ],
-    "files": [
-        "main.js"
-    ]
+  "title": "IndexAssist for TextEmbedder",
+  "name": "github-ebartmess-indexassist",
+  "description": "Copies chapter, line, and column number to clipboard and allows user to prevent text edits to a file.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Elizabeth Bartmess (https://github.com/ebartmess)",
+  "homepage": "https://textembedder.com",
+  "engines": {
+    "brackets": ">=2.0.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "keywords": [
+    "embedded indexing",
+    "indexing",
+    "TextEmbedder",
+    "text embedder"
+  ],
+  "files": [
+    "main.js"
+  ]
 }
-

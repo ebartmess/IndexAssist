@@ -1,44 +1,55 @@
 /*global define, brackets, $ */
 
-// See detailed docs in https://docs.phcode.dev/api/creating-extensions
-
-// A good place to look for code examples for extensions: https://github.com/phcode-dev/phoenix/tree/main/src/extensions/default
-
-// A simple extension that adds an entry in "file menu> hello world"
 define(function (require, exports, module) {
-    "use strict";
+  "use strict";
 
-    // Brackets modules
-    const AppInit = brackets.getModule("utils/AppInit"),
-        DefaultDialogs = brackets.getModule("widgets/DefaultDialogs"),
-        Dialogs = brackets.getModule("widgets/Dialogs"),
-        CommandManager = brackets.getModule("command/CommandManager"),
-        Menus = brackets.getModule("command/Menus");
+  // Brackets modules
+  const AppInit = brackets.getModule("utils/AppInit"),
+    CommandManager = brackets.getModule("command/CommandManager"),
+    Menus = brackets.getModule("command/Menus"),
+    EditorManager = brackets.getModule("editor/EditorManager"),
+    KeyBindingManager = brackets.getModule("command/KeyBindingManager"),
+    DocumentManager = brackets.getModule("document/DocumentManager");
 
-    // Function to run when the menu item is clicked
-    function handleHelloWorld() {
-        Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_INFO,
-            "hello",
-            "world"
-        );
+  // Function to copy the current line and column number to the clipboard
+  function copyCursorPosition() {
+    const editor = EditorManager.getActiveEditor();
+    if (editor) {
+      const cursorPos = editor.getCursorPos();
+      const lineColumn = `${cursorPos.line + 1}:${cursorPos.ch + 1}`;
+
+      const currentDoc = DocumentManager.getCurrentDocument();
+      const filename = currentDoc.file.name;
+      const chapterMatch = filename.match(/\d+/);
+      const chapterNumber = chapterMatch
+        ? chapterMatch[0]
+        : "CHAPTERNUMBERNOTFOUND";
+
+      const clipboardText = `${chapterNumber}:${lineColumn}`;
+      navigator.clipboard.writeText(clipboardText).then(
+        function () {
+          console.log("Copied to clipboard: " + clipboardText);
+        },
+        function (err) {
+          console.error("Could not copy text: ", err);
+        }
+      );
     }
-    
-      // First, register a command - a UI-less object associating an id to a handler
-    var MY_COMMAND_ID = "helloworld.sayhello";   // package-style naming to avoid collisions
-    CommandManager.register("Hello World", MY_COMMAND_ID, handleHelloWorld);
+  }
 
-    // Then create a menu item bound to the command
-    // The label of the menu item is the name we gave the command (see above)
-    var menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
-    menu.addMenuItem(MY_COMMAND_ID);
-    
-    // We could also add a key binding at the same time:
-    //menu.addMenuItem(MY_COMMAND_ID, "Ctrl-Alt-W");
-    // (Note: "Ctrl" is automatically mapped to "Cmd" on Mac)
-    
-    // Initialize extension once shell is finished initializing.
-    AppInit.appReady(function () {
-        console.log("hello world");
-    });
+  // Register the command
+  const COPY_CURSOR_POSITION_ID = "copyCursorPosition.copy";
+  CommandManager.register(
+    "Copy Cursor Position",
+    COPY_CURSOR_POSITION_ID,
+    copyCursorPosition
+  );
+
+  // Add a key binding for the command
+  KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Shift-X");
+
+  // Initialize extension once shell is finished initializing.
+  AppInit.appReady(function () {
+    console.log("Extension ready: Copy Cursor Position");
+  });
 });

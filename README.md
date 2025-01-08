@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Extension Template
 
 Quick start and create a new extension by using this template. Follow the below 4 steps:
@@ -53,3 +54,6 @@ Please go to [https://docs.phcode.dev/api/creating-extensions](https://docs.phco
 
 Once you have built your extension/theme, you can publish the extension to phcode.dev extension repository in a single step directly from this repository.
 Please see publish section in this link for more details: [Publishing extension and themes](https://docs.phcode.dev/api/publishing-extensions)
+=======
+# indexassist-textembedder
+>>>>>>> 7f8a872d18579ea336d6392525d674691d3fd8e4
