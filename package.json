@@ -2,7 +2,7 @@
   "title": "IndexAssist for TextEmbedder",
   "name": "github-ebartmess-indexassist",
   "description": "Copies chapter, line, and column number to clipboard and allows user to prevent text edits to a file.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "author": "Elizabeth Bartmess (https://github.com/ebartmess)",
   "homepage": "https://github.com/ebartmess/IndexAssist",

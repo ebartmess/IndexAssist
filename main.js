@@ -100,40 +100,30 @@ define(function (require, exports, module) {
     lockFile();
   }
 
-  async function navigateToPositionFromClipboard() {
-    const positionString = await Phoenix.app.clipboardReadText();
-    const [chapter, line, column] = positionString.split(":").map(Number);
-    const fileNamePattern = new RegExp(`.*${chapter}.*`, "i");
+  async function switchToFileContainingNumber() {
+    const number = await Phoenix.app.clipboardReadText();
 
-    // Find the file whose name includes the chapter number
-    const openFiles = DocumentManager.getAllOpenDocuments();
-    const targetFile = openFiles.find((doc) =>
-      fileNamePattern.test(doc.file.name)
-    );
+    const workingSet = DocumentManager.getWorkingSet();
+    const numberPattern = new RegExp(`\\b${number}\\b`);
 
-    if (targetFile) {
-      // Open the file
-      DocumentManager.getDocumentForPath(targetFile.file.fullPath).done(
-        function (doc) {
+    for (let i = 0; i < workingSet.length; i++) {
+      const file = workingSet[i];
+      if (numberPattern.test(file.name)) {
+        DocumentManager.getDocumentForPath(file.fullPath).done((doc) => {
           DocumentManager.setCurrentDocument(doc);
-
-          // Set the cursor position
-          const editor = EditorManager.getCurrentFullEditor();
-          editor.setCursorPos(line - 1, column - 1);
-        }
-      );
-    } else {
-      console.error(`No open file found with chapter number: ${chapter}`);
+        });
+        break;
+      }
     }
   }
 
-  // Register the command and add key binding
-  const NAVIGATE_TO_POSITION_CMD_ID = "navigateToPositionFromClipboard";
+  const SWITCH_TO_FILE_CMD_ID = "switchToFileContainingNumber";
   CommandManager.register(
-    "Navigate to Position from Clipboard",
-    NAVIGATE_TO_POSITION_CMD_ID,
-    navigateToPositionFromClipboard
+    "Switch to file containing number",
+    SWITCH_TO_FILE_CMD_ID,
+    switchToFileContainingNumber
   );
+
   // Register the commands and add key bindings
   const LOCK_FILE_CMD_ID = "lockFile";
   const UNLOCK_FILE_CMD_ID = "unlockFile";
@@ -158,17 +148,15 @@ define(function (require, exports, module) {
   KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-K");
   KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Ctrl-Alt-U");
   KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Alt-P");
-  KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Ctrl-Alt-J");
-  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Ctrl-Alt-N");
-  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Ctrl-Alt-G");
+  KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Ctrl-Alt-J");
+  KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Ctrl-Alt-N");
 
   KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Option-L");
   KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Option-K");
   KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Cmd-Option-U");
   KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Cmd-Option-P");
   KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Cmd-Option-J");
-  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Cmd-Option-N");
-  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Cmd-Option-G");
+  KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Cmd-Option-G");
 
   // Add the commands to the menu
   const menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
