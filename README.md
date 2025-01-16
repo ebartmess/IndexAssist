@@ -6,4 +6,4 @@ Features:
 - Unlock files with Ctrl+Alt+U (Cmd+Opt+U on Mac)
 - Copy cursor location or end of highlighted range to clipboard in chapter:line:column format with Ctrl+Alt+P (Cmd+Opt+P on Mac; filename must have a numeral in it to represent the chapter)
 - Copy range start and end locations in chapter:line:column-chapter:line:column format with Ctrl+Alt+J (Cmd+Opt+J on Mac)
-- Navigate to a range pulled from the clipboard in chapter:line:column format with Ctrl+Alt+N or Ctrl+Alt+G (Cmd+Opt+N/Cmd+Opt+G on Mac) [note: does not work for Mac]
+- Navigate to a range pulled from the clipboard in chapter:line:column format with Ctrl+Alt+N or Ctrl+Alt+G (Cmd+Opt+G on Mac)
