@@ -68,14 +68,8 @@ define(function (require, exports, module) {
         : "CHAPTERNUMBERNOTFOUND";
 
       const clipboardText = `${chapterNumber}:${lineColumn}`;
-      navigator.clipboard.writeText(clipboardText).then(
-        function () {
-          console.log("Cursor position copied to clipboard: " + clipboardText);
-        },
-        function (err) {
-          console.error("Could not copy cursor position: ", err);
-        }
-      );
+
+      Phoenix.app.copyToClipboard(clipboardText);
     } else {
       console.log("No active editor found");
     }
@@ -101,49 +95,36 @@ define(function (require, exports, module) {
       const endLineColumn = `${end.line + 1}:${end.ch + 1}`;
 
       const clipboardText = `${chapterNumber}:${startLineColumn}-${chapterNumber}:${endLineColumn}`;
-      navigator.clipboard.writeText(clipboardText).then(
-        function () {
-          console.log("Range copied to clipboard: " + clipboardText);
-        },
-        function (err) {
-          console.error("Could not copy range: ", err);
-        }
-      );
+      Phoenix.app.copyToClipboard(clipboardText);
     }
     lockFile();
   }
 
-  function navigateToPositionFromClipboard() {
-    navigator.clipboard
-      .readText()
-      .then((positionString) => {
-        const [chapter, line, column] = positionString.split(":").map(Number);
-        const fileNamePattern = new RegExp(`.*${chapter}.*`, "i");
+  async function navigateToPositionFromClipboard() {
+    const positionString = await Phoenix.app.clipboardReadText();
+    const [chapter, line, column] = positionString.split(":").map(Number);
+    const fileNamePattern = new RegExp(`.*${chapter}.*`, "i");
 
-        // Find the file whose name includes the chapter number
-        const openFiles = DocumentManager.getAllOpenDocuments();
-        const targetFile = openFiles.find((doc) =>
-          fileNamePattern.test(doc.file.name)
-        );
+    // Find the file whose name includes the chapter number
+    const openFiles = DocumentManager.getAllOpenDocuments();
+    const targetFile = openFiles.find((doc) =>
+      fileNamePattern.test(doc.file.name)
+    );
 
-        if (targetFile) {
-          // Open the file
-          DocumentManager.getDocumentForPath(targetFile.file.fullPath).done(
-            function (doc) {
-              DocumentManager.setCurrentDocument(doc);
+    if (targetFile) {
+      // Open the file
+      DocumentManager.getDocumentForPath(targetFile.file.fullPath).done(
+        function (doc) {
+          DocumentManager.setCurrentDocument(doc);
 
-              // Set the cursor position
-              const editor = EditorManager.getCurrentFullEditor();
-              editor.setCursorPos(line - 1, column - 1);
-            }
-          );
-        } else {
-          console.error(`No open file found with chapter number: ${chapter}`);
+          // Set the cursor position
+          const editor = EditorManager.getCurrentFullEditor();
+          editor.setCursorPos(line - 1, column - 1);
         }
-      })
-      .catch((err) => {
-        console.error("Failed to read clipboard contents: ", err);
-      });
+      );
+    } else {
+      console.error(`No open file found with chapter number: ${chapter}`);
+    }
   }
 
   // Register the command and add key binding
