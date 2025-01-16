@@ -41,6 +41,17 @@ define(function (require, exports, module) {
     }
   }
 
+  function copySelectedText() {
+    console.log(`Copying selected text`);
+    const editor = EditorManager.getActiveEditor();
+    if (editor) {
+      const selectedText = editor.getSelectedText();
+      const textToCopy = selectedText ? selectedText : "";
+      console.log(`text to copy is ${textToCopy}`);
+      Phoenix.app.copyToClipboard(textToCopy);
+    }
+  }
+
   // Function to copy the current line and column number to the clipboard
   function copyCursorPosition() {
     unlockFile();
@@ -117,18 +128,13 @@ define(function (require, exports, module) {
     }
   }
 
-  const SWITCH_TO_FILE_CMD_ID = "switchToFileContainingNumber";
-  CommandManager.register(
-    "Switch to file containing number",
-    SWITCH_TO_FILE_CMD_ID,
-    switchToFileContainingNumber
-  );
-
-  // Register the commands and add key bindings
+  // Register the commands
   const LOCK_FILE_CMD_ID = "lockFile";
   const UNLOCK_FILE_CMD_ID = "unlockFile";
   const COPY_CURSOR_POSITION_ID = "copyCursorPosition.copy";
   const COPY_HIGHLIGHTED_RANGE_ID = "copyHighlightedRange.copy";
+  const SWITCH_TO_FILE_CMD_ID = "switchToFileContainingNumber";
+  const COPY_SELECTED_TEXT_CMD_ID = "copySelectedText.copy";
 
   CommandManager.register("Lock File", LOCK_FILE_CMD_ID, lockFile);
   CommandManager.register("Unlock File", UNLOCK_FILE_CMD_ID, unlockFile);
@@ -142,6 +148,16 @@ define(function (require, exports, module) {
     COPY_HIGHLIGHTED_RANGE_ID,
     copyHighlightedRange
   );
+  CommandManager.register(
+    "Switch to file containing number",
+    SWITCH_TO_FILE_CMD_ID,
+    switchToFileContainingNumber
+  );
+  CommandManager.register(
+    "Copy Selected Text",
+    COPY_SELECTED_TEXT_CMD_ID,
+    copySelectedText
+  );
 
   // Add key bindings
   KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-L");
@@ -150,13 +166,15 @@ define(function (require, exports, module) {
   KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Alt-P");
   KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Ctrl-Alt-J");
   KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Ctrl-Alt-N");
+  KeyBindingManager.addBinding(COPY_SELECTED_TEXT_CMD_ID, "Ctrl-Alt-E");
 
-  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Option-L");
-  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Option-K");
-  KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Cmd-Option-U");
-  KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Cmd-Option-P");
-  KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Cmd-Option-J");
-  KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Cmd-Option-G");
+  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Opt-L");
+  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Opt-K");
+  KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Cmd-Opt-U");
+  KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Cmd-Opt-P");
+  KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Cmd-Opt-J");
+  KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Cmd-Opt-G");
+  KeyBindingManager.addBinding(COPY_SELECTED_TEXT_CMD_ID, "Cmd-Opt-E");
 
   // Add the commands to the menu
   const menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
