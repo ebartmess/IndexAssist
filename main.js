@@ -15,7 +15,7 @@ define(function (require, exports, module) {
   let isFileLocked = true;
 
   function lockFile() {
-    console.log("lockFile function called");
+    console.log("File locked");
     const editor = EditorManager.getActiveEditor();
     if (editor) {
       isFileLocked = true;
@@ -31,6 +31,7 @@ define(function (require, exports, module) {
 
   // Function to unlock the file
   function unlockFile() {
+    console.log(`File unlocked`);
     const editor = EditorManager.getActiveEditor();
     if (editor && isFileLocked) {
       isFileLocked = false;
@@ -44,47 +45,41 @@ define(function (require, exports, module) {
   function copyCursorPosition() {
     unlockFile();
     var editor = EditorManager.getActiveEditor();
-    setTimeout(() => {
-      editor.setCursorPos(startLine - 1, startColumn - 1);
-      editor.setSelection(
-        { line: startLine - 1, ch: startColumn - 1 },
-        { line: endLine - 1, ch: endColumn - 1 }
-      );
-
-      // Scroll to make the start line visible at the top
-      editor.setCursorPos(startLine - 1, startColumn - 1, true);
-    }, 100); // 100 milliseconds delay
     var selectedText = editor.getSelectedText();
-    if (selectedText.length > 0) {
-      copyHighlightedRange();
-    } else {
-      // existing logic for copying cursor position
-      const editor = EditorManager.getActiveEditor();
-      if (editor) {
-        const cursorPos = editor.getCursorPos();
-        const lineColumn = `${cursorPos.line + 1}:${cursorPos.ch + 1}`;
 
-        const currentDoc = DocumentManager.getCurrentDocument();
-        const filename = currentDoc.file.name;
-        const chapterMatch = filename.match(/\d+/);
-        const chapterNumber = chapterMatch
-          ? chapterMatch[0]
-          : "CHAPTERNUMBERNOTFOUND";
-
-        const clipboardText = `${chapterNumber}:${lineColumn}`;
-        navigator.clipboard.writeText(clipboardText).then(
-          function () {
-            console.log("Copied to clipboard: " + clipboardText);
-          },
-          function (err) {
-            console.error("Could not copy text: ", err);
-          }
-        );
+    let lineColumn = ``;
+    // existing logic for copying cursor position
+    if (editor) {
+      if (selectedText.length > 0) {
+        const selection = editor.getSelection();
+        //const start = selection.start;
+        const end = selection.end;
+        lineColumn = `${end.line + 1}:${end.ch + 1}`;
       } else {
-        console.log("No active editor found");
+        const cursorPos = editor.getCursorPos();
+        lineColumn = `${cursorPos.line + 1}:${cursorPos.ch + 1}`;
       }
-      lockFile();
+
+      const currentDoc = DocumentManager.getCurrentDocument();
+      const filename = currentDoc.file.name;
+      const chapterMatch = filename.match(/\d+/);
+      const chapterNumber = chapterMatch
+        ? chapterMatch[0]
+        : "CHAPTERNUMBERNOTFOUND";
+
+      const clipboardText = `${chapterNumber}:${lineColumn}`;
+      navigator.clipboard.writeText(clipboardText).then(
+        function () {
+          console.log("Cursor position copied to clipboard: " + clipboardText);
+        },
+        function (err) {
+          console.error("Could not copy cursor position: ", err);
+        }
+      );
+    } else {
+      console.log("No active editor found");
     }
+    lockFile();
   }
 
   function copyHighlightedRange() {
@@ -108,10 +103,10 @@ define(function (require, exports, module) {
       const clipboardText = `${chapterNumber}:${startLineColumn}-${chapterNumber}:${endLineColumn}`;
       navigator.clipboard.writeText(clipboardText).then(
         function () {
-          console.log("Copied to clipboard: " + clipboardText);
+          console.log("Range copied to clipboard: " + clipboardText);
         },
         function (err) {
-          console.error("Could not copy text: ", err);
+          console.error("Could not copy range: ", err);
         }
       );
     }
@@ -158,7 +153,6 @@ define(function (require, exports, module) {
     NAVIGATE_TO_POSITION_CMD_ID,
     navigateToPositionFromClipboard
   );
-  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Ctrl-Alt-N");
   // Register the commands and add key bindings
   const LOCK_FILE_CMD_ID = "lockFile";
   const UNLOCK_FILE_CMD_ID = "unlockFile";
@@ -180,9 +174,20 @@ define(function (require, exports, module) {
 
   // Add key bindings
   KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-L");
+  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-K");
   KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Ctrl-Alt-U");
   KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Alt-P");
   KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Ctrl-Alt-J");
+  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Ctrl-Alt-N");
+  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Ctrl-Alt-G");
+
+  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Option-L");
+  KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Option-K");
+  KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Cmd-Option-U");
+  KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Cmd-Option-P");
+  KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Cmd-Option-J");
+  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Cmd-Option-N");
+  KeyBindingManager.addBinding(NAVIGATE_TO_POSITION_CMD_ID, "Cmd-Option-G");
 
   // Add the commands to the menu
   const menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
