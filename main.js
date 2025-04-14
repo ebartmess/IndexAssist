@@ -199,7 +199,7 @@ define(function (require, exports, module) {
   async function goToLocationOrHighlightRange() {
     lockFile();
     const locator = await Phoenix.app.clipboardReadText();
-    console.log("Locator from clipboard: " + locator);
+    console.log("Going to location or range: " + locator);
 
     if (locator.includes("-")) {
       // Locator is a range
@@ -227,6 +227,7 @@ define(function (require, exports, module) {
 
       // Call goToAndHighlightRange
       await goToAndHighlightRange(locator);
+      scrollToHighlightedRange(); // Scroll to the highlighted range
     } else {
       // Locator is a single location
       console.log("Locator is a single location");
@@ -252,6 +253,20 @@ define(function (require, exports, module) {
       } else {
         console.log("No active editor found");
       }
+    }
+  }
+
+  function scrollToHighlightedRange() {
+    const editor = EditorManager.getActiveEditor();
+    if (editor) {
+      const selection = editor.getSelection();
+      const start = selection.start; // Get the start of the highlighted range
+
+      // Scroll the editor to make the start of the range visible
+      editor._codeMirror.scrollIntoView({ line: start.line, ch: start.ch });
+      console.log(`Scrolled to top of highlighted range`);
+    } else {
+      console.log("No active editor found");
     }
   }
 
@@ -297,23 +312,21 @@ define(function (require, exports, module) {
 
   // Add key bindings
   if (platform === "win" || platform === "linux") {
-    KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-L");
     KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Ctrl-Alt-K");
     KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Ctrl-Alt-U");
     KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Ctrl-Alt-P");
-    KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Ctrl-Alt-J");
+    KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Ctrl-Alt-J");
     KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Ctrl-Alt-N");
     KeyBindingManager.addBinding(COPY_SELECTED_TEXT_CMD_ID, "Ctrl-Alt-E");
     KeyBindingManager.addBinding(
       GO_TO_LOCATION_OR_HIGHLIGHT_RANGE_CMD_ID,
-      "Ctrl-Alt-H"
+      "Ctrl-Alt-A"
     );
   } else if (platform === "mac") {
     KeyBindingManager.addBinding(LOCK_FILE_CMD_ID, "Cmd-Opt-K");
     KeyBindingManager.addBinding(UNLOCK_FILE_CMD_ID, "Cmd-Opt-U");
     KeyBindingManager.addBinding(COPY_CURSOR_POSITION_ID, "Cmd-Opt-P");
     KeyBindingManager.addBinding(COPY_HIGHLIGHTED_RANGE_ID, "Cmd-Opt-J");
-    KeyBindingManager.addBinding(SWITCH_TO_FILE_CMD_ID, "Cmd-Opt-G");
     KeyBindingManager.addBinding(COPY_SELECTED_TEXT_CMD_ID, "Cmd-Opt-E");
     KeyBindingManager.addBinding(
       GO_TO_LOCATION_OR_HIGHLIGHT_RANGE_CMD_ID,
