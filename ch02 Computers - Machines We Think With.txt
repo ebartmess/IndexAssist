@@ -1,0 +1,31 @@
+Public domain text taken from https://www.gutenberg.org/cache/epub/72572/pg72572-images.html
+Original text slightly edited and photos/captions removed. I have broken chapter 1 up into multiple "chapters" for testing purposes. 
+
+Computers—THE MACHINES WE THINK WITH
+D. S. HALACY, Jr.
+1962
+Chapter 1: Computers—The Machines We Think With
+
+Part 2
+
+Along with computing machines a whole new technology is growing. Universities and colleges—even high schools—are teaching courses in computers. And the computer itself is getting into the teaching business too. The “teaching machine” is one of the most challenging computer developments to come along so far. These mechanical professors range from simple “programmed” notebooks, such as the Book of Knowledge and Encyclopedia Britannica are experimenting with, to complex computerized systems such as that developed by U.S. Industries, Inc., for the Air Force and others.
+
+The computer as a teaching machine immediately raises the question of intelligence, and whether or not the computer has any. Debate waxes hot on this subject; but perhaps one authority was only half joking when he said that the computer designer’s competition was a unit about the size of a grapefruit, using only a tenth of a volt of electricity, with a memory 10,000 times as extensive as any existing electronic computer. This is a brief description of the human brain, of course.
+
+When the first computers appeared, those like ENIAC and BINAC, fiction writers and even some science writers had a field day turning the machines into diabolical “brains.” Whether or not the computer really thinks remains a controversial question. Some top scientists claim that the computer will eventually be far smarter than its human builder; equally reputable authorities are just as sure that no computer will ever have an original thought in its head. Perhaps a safe middle road is expressed with the title of this book; namely that the machine is simply an extension of the human brain. A high-speed abacus or slide rule, if you will; accurate and foolproof, but a moron nonetheless.
+
+There are some interesting machine-brain parallels, of course. Besides its ability to do mathematics, the computer can perform logical reasoning and even make decisions. It can read and translate; remembering is a basic part of its function. Scientists are now even talking of making computers “dream” in an attempt to come up with new ideas!
+
+More similarities are being discovered or suggested. For instance, the interconnections in a computer are being compared with, and even crudely patterned after, the brain’s neurons. A new scientific discipline, called “bionics,” concerns itself with such studies. Far from being a one-way street, bionics works both ways so that engineers and biologists alike benefit. In fact, some new courses being taught in universities are designed to “bridge the gap between engineering and biology.”
+
+At one time the only learning a computer had was “soldered in”; today the machines are being “forced” to learn by the application of punishment or reward as necessary. “Free” learning in computers of the Perceptron class is being experimented with. These studies, and statements like those of renowned scientist Linus Pauling that he expects a “molecular theory” of learning in human beings to be developed, are food for thought 8as we consider the parallels our electronic machines share with us. Psychologists at the University of London foresee computers not only training humans, but actually watching over them and predicting imminent nervous breakdowns in their charges!
+
+To demonstrate their skill many computers play games of tick-tack-toe, checkers, chess, Nim, and the like. A simple electromechanical computer designed for young people to build can be programmed to play tick-tack-toe expertly. Checker- and chess-playing computers are more sophisticated, many of them learning as they play and capable of an occasional move classed as brilliant by expert human players. The IBM 704 computer has been programmed to inspect the results of its possible decisions several moves ahead and to select the best choice. At the end of the game it prints out the winner and thanks its opponent 9for the game. Rated as polite, but only an indifferent player by experts, the computer is much like the checker-playing dog whose master scoffed at him for getting beaten three games out of five. Chess may well be an ultimate challenge for any kind of brain, since the fastest computer in operation today could not possibly work out all the possible moves in a game during a human lifetime!
+
+As evidenced in the science-fiction treatment early machines got, the first computers were monsters at least in size. Pioneering design efforts on machines with the capacity of the brain led to plans for something roughly the size of the Pentagon, equipped with its own Niagara for power and cooling, and a price tag the world couldn’t afford. As often seems to happen when a need arises, though, new developments have come along to offset the initial obstacles of size and cost.
+
+One such development was the transistor and other semiconductor devices. Tiny and rugged, these components require little power. With the old vacuum-tubes replaced, computers shrank immediately and dramatically. On the heels of this micro-miniaturization have come new and even smaller devices called “ferrite cores” and “cryotrons” using magnetism and supercold temperatures instead of conventional electronic techniques.
+
+As a result, an amazing number of parts can be packed into a tiny volume. So-called “molecular electronics” now seems to be a possibility, and designers of computers have a gleam in their eyes as they consider progress being made toward matching the “packaging density” of the brain. This human computer has an estimated 100 billion parts per cubic foot!
+
+We have talked of reading and translating. Some new computers can also accept voice commands and speak themselves. Others furnish information in typed or printed form, punched cards, or a display on a tube or screen.
